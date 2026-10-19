@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- 为什么：自包含可独立构建的开源版本，不设 parent、不导入任何内部 BOM —— 干什么：以 GAV 直接声明本项目坐标 -->
+    <groupId>com.worm</groupId>
+    <artifactId>worm-toolkit</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>worm-toolkit</name>
+    <description>共享工具集（开源版）：Hutool 基座封装、拼音处理、HTML 转义与净化、MyBatis-Plus 代码生成器等通用工具能力</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 为什么：本开源版本面向 JDK 8 基线（对齐已发布前四仓 statemachine-spring-boot-starter） —— 干什么：编译源码级别与字节码目标均为 Java 8 -->
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <!-- 为什么：本 pom 无 parent、无 dependencyManagement 导入，所有版本必须自包含写死；以下取值逐一解析自 worm-dependence-parent BOM（含其导入的 spring-boot-dependencies 4.0.6），保证与主仓依赖基线对齐 —— 干什么：以同 pom 属性固定各依赖版本 -->
+        <!-- cn.hutool:hutool-all —— 来源：worm-dependence-parent properties 的 hutool-all.version -->
+        <hutool-all.version>5.8.25</hutool-all.version>
+        <!-- com.belerweb:pinyin4j —— 来源：worm-dependence-parent properties 的 pinyin4j.version -->
+        <pinyin4j.version>2.5.1</pinyin4j.version>
+        <!-- org.jsoup:jsoup —— 来源：worm-dependence-parent properties 的 jsoup.version -->
+        <jsoup.version>1.17.2</jsoup.version>
+        <!-- com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer —— 来源：worm-dependence-parent properties 的 owasp-java-html-sanitizer.version -->
+        <owasp-java-html-sanitizer.version>20240325.1</owasp-java-html-sanitizer.version>
+        <!-- io.swagger.core.v3:swagger-annotations-jakarta —— 来源：worm-dependence-parent properties 的 swagger-annotations-jakarta.version（@Schema 注解，源码 import 不变原则） -->
+        <swagger-annotations-jakarta.version>2.2.21</swagger-annotations-jakarta.version>
+        <!-- com.baomidou:mybatis-plus-* —— 来源：worm-dependence-parent properties 的 mybatis-plus.version；R10 裁定：generator 3.5.16 对 annotation/extension 为 provided 不传递，PageVo 编译需显式声明（与旧模块 pom 声明方式一致，dependency:tree 实证） -->
+        <mybatis-plus.version>3.5.16</mybatis-plus.version>
+        <!-- org.freemarker:freemarker —— 来源：worm-dependence-parent 导入的 spring-boot-dependencies 4.0.6 中 freemarker.version -->
+        <freemarker.version>2.3.34</freemarker.version>
+        <!-- org.projectlombok:lombok —— 来源：worm-dependence-parent properties 的 lombok.version（1.18.34 起官方支持 JDK 8~21 全基线） -->
+        <lombok.version>1.18.34</lombok.version>
+        <!-- org.slf4j:slf4j-api —— 来源：worm-dependence-parent 导入的 spring-boot-dependencies 4.0.6 中 slf4j.version -->
+        <slf4j.version>2.0.17</slf4j.version>
+        <!-- 为什么：JUnit 6（6.0.3）classfile 为 v61 需 Java 17+，与本模块 JDK 8 基线（v52）冲突，Task 2.1 实测 test-compile 失败 —— 干什么：选用 Java 8 兼容的 JUnit 5 线 5.10.2（主控裁定 R6） -->
+        <junit-jupiter.version>5.10.2</junit-jupiter.version>
+        <!-- com.mysql:mysql-connector-j —— 来源：worm-dependence-parent 导入的 spring-boot-dependencies 4.0.6 中 mysql.version -->
+        <mysql.version>9.7.0</mysql.version>
+    </properties>
+
+    <dependencies>
+        <!-- Hutool 通用基座 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool-all.version}</version>
+        </dependency>
+        <!-- 拼音处理（LetterUtils） -->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>${pinyin4j.version}</version>
+        </dependency>
+        <!-- HTML 转义与净化（EscapeUtils） -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+            <artifactId>owasp-java-html-sanitizer</artifactId>
+            <version>${owasp-java-html-sanitizer.version}</version>
+        </dependency>
+        <!-- OpenAPI v3 注解（@Schema） -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations-jakarta</artifactId>
+            <version>${swagger-annotations-jakarta.version}</version>
+        </dependency>
+        <!-- MyBatis-Plus 注解（共享模型编译依赖，R10） -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <!-- MyBatis-Plus 扩展（PageVo 编译依赖 Page，R10） -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <!-- MyBatis-Plus 代码生成器 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <!-- 代码生成器 Freemarker 模板引擎 -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
+        </dependency>
+        <!-- 为什么：编译期注解处理器，随源码发布便于消费方直接复用（写法对齐 statemachine-spring-boot-starter） —— 干什么：不设 scope 与 optional -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+        <!-- 日志门面 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <!-- 单元测试 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- 为什么：仅生成器直连 MySQL 建表检查等场景需要驱动，避免强制传递给消费方 —— 干什么：scope 降级为 provided -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>${mysql.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
