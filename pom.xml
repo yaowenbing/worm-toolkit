@@ -6,7 +6,7 @@
     <!-- 为什么：自包含可独立构建的开源版本，不设 parent、不导入任何内部 BOM —— 干什么：以 GAV 直接声明本项目坐标 -->
     <groupId>com.worm</groupId>
     <artifactId>worm-toolkit</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>worm-toolkit</name>
@@ -14,9 +14,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- 为什么：本开源版本面向 JDK 8 基线（对齐已发布前四仓 statemachine-spring-boot-starter） —— 干什么：编译源码级别与字节码目标均为 Java 8 -->
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <!-- 为什么：全仓基线统一到 JDK 17（对齐已发布前四仓 statemachine-spring-boot-starter） —— 干什么：编译源码级别与字节码目标均为 Java 17 -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <!-- 为什么：本 pom 无 parent、无 dependencyManagement 导入，所有版本必须自包含写死；以下取值逐一解析自 worm-dependences-bom 版本清单（含其导入的 spring-boot-dependencies 4.0.6），保证与主仓依赖基线对齐 —— 干什么：以同 pom 属性固定各依赖版本 -->
         <!-- cn.hutool:hutool-all —— 来源：worm-bom-outer properties 的 hutool-all.version -->
         <hutool-all.version>5.8.25</hutool-all.version>
