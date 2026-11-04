@@ -14,9 +14,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- 为什么：全仓基线统一到 JDK 17（对齐已发布前四仓 statemachine-spring-boot-starter） —— 干什么：编译源码级别与字节码目标均为 Java 17 -->
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <!-- 为什么：全仓基线统一到 JDK 17 —— 干什么：以 release=17 一次性约束源码级别、字节码目标与 JDK API 签名，防止误引高版本 API -->
+        <maven.compiler.release>17</maven.compiler.release>
         <!-- 为什么：本 pom 无 parent、无 dependencyManagement 导入，所有版本必须自包含写死；以下取值逐一解析自 worm-dependences-bom 版本清单（含其导入的 spring-boot-dependencies 4.0.6），保证与主仓依赖基线对齐 —— 干什么：以同 pom 属性固定各依赖版本 -->
         <!-- cn.hutool:hutool-all —— 来源：worm-bom-outer properties 的 hutool-all.version -->
         <hutool-all.version>5.8.25</hutool-all.version>
@@ -36,7 +35,7 @@
         <lombok.version>1.18.34</lombok.version>
         <!-- org.slf4j:slf4j-api —— 来源：worm-bom-outer 导入的 spring-boot-dependencies 4.0.6 中 slf4j.version -->
         <slf4j.version>2.0.17</slf4j.version>
-        <!-- 为什么：JUnit 6（6.0.3）classfile 为 v61 需 Java 17+，与本模块 JDK 8 基线（v52）冲突，Task 2.1 实测 test-compile 失败 —— 干什么：选用 Java 8 兼容的 JUnit 5 线 5.10.2（主控裁定 R6） -->
+        <!-- 为什么：JUnit 6（6.0.3）classfile 为 v61 需 Java 17+，本模块基线统一为 JDK 17（v61）后该冲突已消除，版本沿用主控裁定 R6 的 JUnit 5 线选型不动 —— 干什么：固定 junit-jupiter 5.10.2 供模块测试使用 -->
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
         <!-- com.mysql:mysql-connector-j —— 来源：worm-bom-outer 导入的 spring-boot-dependencies 4.0.6 中 mysql.version -->
         <mysql.version>9.7.0</mysql.version>
