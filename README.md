@@ -14,7 +14,7 @@ Maven 坐标：
 
 ## 简介
 
-worm-toolkit 是一个自包含的 Java 工具集模块：无 parent POM、无任何 Spring 依赖，编译基线为 JDK 17，可独立构建、独立引用。模块由三部分组成：
+worm-toolkit 是一个自包含的 Java 工具集模块：无 parent POM、无任何 Spring 依赖，编译基线为 JDK 21，可独立构建、独立引用。模块由三部分组成：
 
 - `com.worm.toolkit.util`：5 个静态工具类（XSS 净化、拼音转换、时区时间、Ant 路径匹配、JWT）。
 - `com.worm.toolkit.core`：9 个共享模型与契约（分页入参/出参、用户上下文、中文姓名 DTO、参数位置枚举与常量、请求头常量、多租户接口）。
@@ -22,7 +22,7 @@ worm-toolkit 是一个自包含的 Java 工具集模块：无 parent POM、无�
 
 ## 特性
 
-- **零容器依赖**：不依赖 Spring、Servlet 及任何容器运行时，任何 JDK 17+ 项目直接引用即可使用。
+- **零容器依赖**：不依赖 Spring、Servlet 及任何容器运行时，任何 JDK 21+ 项目直接引用即可使用。
 - **XSS 净化**：jsoup + OWASP java-html-sanitizer 双重白名单净化富文本，移除脚本向量并保留基础排版标签。
 - **拼音处理**：pinyin4j 实现汉字转无声调小写全拼与首字母缩写，多音字以词级映射兜底选音。
 - **时区时间**：继承 Hutool `LocalDateTimeUtil` 全部静态能力，并提供 Asia/Shanghai 当前时间快捷方法。
@@ -32,7 +32,7 @@ worm-toolkit 是一个自包含的 Java 工具集模块：无 parent POM、无�
 
 ## 环境要求
 
-- JDK 17 及以上
+- JDK 21 及以上
 - Maven 3.6 及以上
 - 运行代码生成器时需可连通的 MySQL 数据库；驱动 `com.mysql:mysql-connector-j` 为 provided 作用域，由使用方自行引入
 
@@ -308,7 +308,7 @@ src/main/resources/templates/
 ## FAQ
 
 1. 问：零容器依赖的模块如何独立使用？
-   答：本模块无 parent、无 Spring 依赖，任何 JDK 17+ 项目引入 Maven 坐标即可调用；日志仅依赖 slf4j-api 门面，运行时由使用方绑定具体实现（如 logback）。
+   答：本模块无 parent、无 Spring 依赖，任何 JDK 21+ 项目引入 Maven 坐标即可调用；日志仅依赖 slf4j-api 门面，运行时由使用方绑定具体实现（如 logback）。
 
 2. 问：为什么显式声明 mybatis-plus-annotation 与 mybatis-plus-extension？
    答：mybatis-plus-generator 3.5.16 对这两个依赖的 scope 为 provided，不会传递到消费方；而共享模型 PageVo 编译需要 Page、实体契约需要 MP 注解，故在本模块显式声明（经 dependency:tree 实证），保证依赖完整传递。
@@ -320,7 +320,7 @@ src/main/resources/templates/
    答：密钥必须 16 字节；字段建议 `varchar(255)` 或 `text`；加密字段无法直接使用 `=`、`LIKE` 等条件查询；启用加密后需迁移历史数据。详见「加密字段识别」一节。
 
 5. 问：JDK 基线与测试如何？
-   答：以 release=17 一次约束源码级别、字节码与签名（pom 中 `maven.compiler.release` 为 17），字节码版本为 61。单元测试基于 JUnit 5（5.10.2），在模块目录执行 `mvn test` 运行，覆盖 5 个工具类与生成器配置类。
+   答：以 release=21 一次约束源码级别、字节码与签名（pom 中 `maven.compiler.release` 为 21），字节码版本为 65。单元测试基于 JUnit 5（5.10.2），在模块目录执行 `mvn test` 运行，覆盖 5 个工具类与生成器配置类。
 
 ## 许可证
 

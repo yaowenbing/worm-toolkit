@@ -14,7 +14,7 @@ Maven coordinates:
 
 ## Introduction
 
-worm-toolkit is a self-contained Java utility module: no parent POM and no Spring dependencies at all, compiled against JDK 17, buildable and consumable independently. The module consists of three parts:
+worm-toolkit is a self-contained Java utility module: no parent POM and no Spring dependencies at all, compiled against JDK 21, buildable and consumable independently. The module consists of three parts:
 
 - `com.worm.toolkit.util`: 5 static utility classes (XSS sanitization, pinyin conversion, timezone-aware time, Ant path matching, JWT).
 - `com.worm.toolkit.core`: 9 shared models and contracts (pagination input/output, user context, Chinese name DTO, parameter-location enum and constants, request-header constants, multi-tenancy interfaces).
@@ -22,7 +22,7 @@ worm-toolkit is a self-contained Java utility module: no parent POM and no Sprin
 
 ## Features
 
-- **Zero container dependencies**: no Spring, Servlet, or any container runtime; any JDK 17+ project can consume it directly.
+- **Zero container dependencies**: no Spring, Servlet, or any container runtime; any JDK 21+ project can consume it directly.
 - **XSS sanitization**: jsoup plus OWASP java-html-sanitizer apply dual whitelist sanitization to rich text, removing script vectors while keeping basic formatting tags.
 - **Pinyin processing**: pinyin4j converts Chinese characters to toneless lowercase full pinyin and to initial-letter abbreviations, with word-level mappings as the fallback for polyphonic characters.
 - **Timezone time**: inherits all static capabilities of Hutool `LocalDateTimeUtil` and provides a shortcut method for the current Asia/Shanghai time.
@@ -32,7 +32,7 @@ worm-toolkit is a self-contained Java utility module: no parent POM and no Sprin
 
 ## Requirements
 
-- JDK 17 or above
+- JDK 21 or above
 - Maven 3.6 or above
 - A reachable MySQL database when running the code generator; the driver `com.mysql:mysql-connector-j` is provided-scope and must be introduced by the consumer
 
@@ -308,7 +308,7 @@ Beyond the list above, this module has zero Spring dependencies, zero Servlet de
 ## FAQ
 
 1. Q: How can a module with zero container dependencies be used standalone?
-   A: The module has no parent and no Spring dependencies; any JDK 17+ project only needs the Maven coordinates to call it. Logging relies solely on the slf4j-api facade; the consumer binds a concrete implementation (e.g. logback) at runtime.
+   A: The module has no parent and no Spring dependencies; any JDK 21+ project only needs the Maven coordinates to call it. Logging relies solely on the slf4j-api facade; the consumer binds a concrete implementation (e.g. logback) at runtime.
 
 2. Q: Why are mybatis-plus-annotation and mybatis-plus-extension declared explicitly?
    A: In mybatis-plus-generator 3.5.16 these two dependencies are provided-scoped and therefore not transitively delivered to consumers; since the shared model PageVo needs Page at compile time and the entity contract needs MP annotations, they are declared explicitly in this module (verified via dependency:tree) to guarantee complete dependency delivery.
@@ -320,7 +320,7 @@ Beyond the list above, this module has zero Spring dependencies, zero Servlet de
    A: The key must be 16 bytes; `varchar(255)` or `text` is recommended for the columns; encrypted fields cannot be queried directly with conditions such as `=` or `LIKE`; historical data must be migrated after encryption is enabled. See the "Encrypted Field Recognition" section for details.
 
 5. Q: What about the JDK baseline and testing?
-   A: A single release=17 setting constrains the source level, bytecode, and signatures at once (`maven.compiler.release` is 17 in the pom), producing bytecode version 61. Unit tests are based on JUnit 5 (5.10.2); run `mvn test` in the module directory, covering the 5 utility classes and the generator configuration class.
+   A: A single release=21 setting constrains the source level, bytecode, and signatures at once (`maven.compiler.release` is 21 in the pom), producing bytecode version 65. Unit tests are based on JUnit 5 (5.10.2); run `mvn test` in the module directory, covering the 5 utility classes and the generator configuration class.
 
 ## License
 
