@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- 为什么：7 个无源码预置构件的 class 为 major 65，构建/运行 JDK 已切到 21，编译目标需与之对齐 —— 干什么：以 release=21 一次性约束源码级别、字节码目标与 JDK API 签名 -->
         <maven.compiler.release>21</maven.compiler.release>
-        <!-- 为什么：本 pom 无 parent、无 dependencyManagement 导入，所有版本必须自包含写死；以下取值逐一解析自 worm-dependences-bom 版本清单（含其导入的 spring-boot-dependencies 4.0.8），保证与主仓依赖基线对齐 —— 干什么：以同 pom 属性固定各依赖版本 -->
+        <!-- 为什么：本 pom 无 parent、无 dependencyManagement 导入，所有版本必须自包含写死；以下取值逐一解析自 worm-bom-outer 版本清单（含其导入的 spring-boot-dependencies 4.0.8），保证与主仓依赖基线对齐 —— 干什么：以同 pom 属性固定各依赖版本 -->
         <!-- cn.hutool:hutool-all —— 来源：worm-bom-outer properties 的 hutool-all.version -->
         <hutool-all.version>5.8.25</hutool-all.version>
         <!-- com.belerweb:pinyin4j —— 主仓基线已移除该条目（无使用方），本模块自持版本 —— 来源：本 pom 自持 -->
@@ -27,7 +27,7 @@
         <owasp-java-html-sanitizer.version>20240325.1</owasp-java-html-sanitizer.version>
         <!-- io.swagger.core.v3:swagger-annotations-jakarta —— 来源：worm-bom-outer properties 的 swagger-annotations-jakarta.version（@Schema 注解，源码 import 不变原则） -->
         <swagger-annotations-jakarta.version>2.2.21</swagger-annotations-jakarta.version>
-        <!-- com.baomidou:mybatis-plus-* —— 来源：worm-dependences-bom properties 的 mybatis-plus.version；R10 裁定：generator 3.5.16 对 annotation/extension 为 provided 不传递，PageVo 编译需显式声明（与旧模块 pom 声明方式一致，dependency:tree 实证） -->
+        <!-- com.baomidou:mybatis-plus-* —— 来源：worm-bom-outer properties 的 mybatis-plus.version；R10 裁定：generator 3.5.16 对 annotation/extension 为 provided 不传递，PageVo 编译需显式声明（与旧模块 pom 声明方式一致，dependency:tree 实证） -->
         <mybatis-plus.version>3.5.16</mybatis-plus.version>
         <!-- org.freemarker:freemarker —— 来源：worm-bom-outer 导入的 spring-boot-dependencies 4.0.8 中 freemarker.version -->
         <freemarker.version>2.3.34</freemarker.version>
